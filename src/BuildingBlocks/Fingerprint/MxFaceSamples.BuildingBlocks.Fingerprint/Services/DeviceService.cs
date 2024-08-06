@@ -1,63 +1,108 @@
-﻿using MorFin_Auth;
+﻿using Microsoft.Extensions.Logging;
+using MorFin_Auth;
 using MxFaceSamples.BuildingBlocks.Fingerprint.Interfaces;
+using System.Net.Http.Json;
 using System.Text.Json;
 
 namespace MxFaceSamples.BuildingBlocks.Fingerprint.Services;
 
-public class DeviceService(HttpClient httpClient) : IDeviceService
+public class DeviceService(HttpClient httpClient, ILogger<DeviceService> logger) : IDeviceService
 {
     private readonly string remoteServiceBaseUrl = "morfinauth/";
 
     public async Task<int> GetConnectedDevices(List<string> devices)
     {
-        var connectedDeviceEndpoint = Path.Combine(remoteServiceBaseUrl, "connecteddevicelist");
+        var response = (await this.PostRequestAsync("connecteddevicelist")).FirstOrDefault();
 
-        var requestMessage = new HttpRequestMessage(HttpMethod.Post, remoteServiceBaseUrl);
+        if (IsSuccessStatusCode(response.Key))
+        {
+            //TODO: Check if the response is a list of strings and fix the deserialization
+
+            devices.AddRange(JsonSerializer.Deserialize<List<string>>(response.Value));
+
+            return devices.Count;
+        }
+        else return 0;
+    }
+
+    public async Task<int> GetSupportedDevices(DEVICE_LIST[] deviceList)
+    {
+        var response = (await this.PostRequestAsync("supporteddevicelist")).FirstOrDefault();
+
+        if (IsSuccessStatusCode(response.Key))
+        {
+            //TODO: Check if the response is a list of strings and fix the deserialization
+
+            return 0;
+        }
+
+        else return -1;
+    }
+
+    public async Task<int> Init(string productName)
+    {
+        var response = (await this.PostRequestAsync("initdevice", new { ConnectedDvc = productName })).FirstOrDefault();
+
+        if (IsSuccessStatusCode(response.Key))
+        {
+            //TODO: Check if the response is a list of strings and fix the deserialization
+
+            return 0;
+        }
+        else return -1;
+
+    }
+
+    public async Task<int> IsDeviceConnected(string productName)
+    {
+        var response = (await this.PostRequestAsync("checkdevice", new { ConnectedDvc = productName })).FirstOrDefault();
+
+        if (IsSuccessStatusCode(response.Key))
+        {
+            //TODO: Check if the response is a list of strings and fix the deserialization
+
+            return 0;
+        }
+        else return -1;
+    }
+
+    public async Task UnInit()
+    {
+        var response = (await this.PostRequestAsync("uninitdevice")).FirstOrDefault();
+
+        if (IsSuccessStatusCode(response.Key))
+        {
+            //TODO: Check if the response is a list of strings and fix the deserialization
+        }
+    }
+
+    private async Task<Dictionary<int, string>> PostRequestAsync(string endpoint, object content = null)
+    {
+        endpoint = Path.Combine(remoteServiceBaseUrl, endpoint);
+
+        var requestMessage = new HttpRequestMessage(HttpMethod.Post, endpoint);
+
+        if (content != null)
+            requestMessage.Content = JsonContent.Create(content);
 
         var response = await httpClient.SendAsync(requestMessage);
 
         if (response.IsSuccessStatusCode)
         {
-            var responseContent = await response.Content.ReadAsStringAsync();
 
-            devices.AddRange(JsonSerializer.Deserialize<List<string>>(responseContent));
-
-            return 0;
+            return new Dictionary<int, string>
+            {
+                {
+                    (int)response.StatusCode,
+                    await response.Content.ReadAsStringAsync()
+                }
+            };
         }
-        else return (int)response.StatusCode;
+        else return new Dictionary<int, string> { { 0, String.Empty } };
     }
 
-    public Task<int> GetSupportedDevices(DEVICE_LIST[] deviceList, out int deviceCount)
+    private bool IsSuccessStatusCode(int statusCode)
     {
-        var connectedDeviceEndpoint = Path.Combine(remoteServiceBaseUrl, "supporteddevicelist");
-
-        var requestMessage = new HttpRequestMessage(HttpMethod.Post, remoteServiceBaseUrl);
-
-        var response = httpClient.SendAsync(requestMessage).Result;
-
-        if (response.IsSuccessStatusCode)
-        {
-            var responseContent = response.Content.ReadAsStringAsync().Result;
-
-            devices.AddRange(JsonSerializer.Deserialize<List<string>>(responseContent));
-
-            return 0;
-        }
-        else return (int)response.StatusCode;
-    }
-
-    public Task<int> Init(string productName, ref FINGER_DEVICE_INFO deviceInfo)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<int> IsDeviceConnected(string productName)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task UnInit()
-    {
-        throw new NotImplementedException();
+        return ((int)statusCode >= 200) && ((int)statusCode <= 299);
     }
 }

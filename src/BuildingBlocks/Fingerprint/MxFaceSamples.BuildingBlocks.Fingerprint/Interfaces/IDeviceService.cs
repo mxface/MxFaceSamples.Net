@@ -8,12 +8,11 @@ public interface IDeviceService
     /// Initializes the connected fingerprint device
     /// </summary>
     /// <param name="productName">Connected device name</param>
-    /// <param name="deviceInfo">Device initiation success on return device information. <see cref="MorFin_Auth.FINGER_DEVICE_INFO"/></param>
     /// <returns>
     /// 0 = Initialization success
     /// 0! = Initialization failed
     /// </returns>
-    Task<int> Init(string productName, ref FINGER_DEVICE_INFO deviceInfo);
+    Task<int> Init(string productName);
 
     /// <summary>
     /// Checks if the device is connected
@@ -40,7 +39,7 @@ public interface IDeviceService
     /// <param name="deviceList"></param>
     /// <param name="deviceCount"></param>
     /// <returns></returns>
-    Task<int> GetSupportedDevices(DEVICE_LIST[] deviceList, out int deviceCount);
+    Task<int> GetSupportedDevices(DEVICE_LIST[] deviceList);
 
     /// <summary>
     /// Uninitializes the connected fingerprint device

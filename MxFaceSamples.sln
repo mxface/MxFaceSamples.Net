@@ -9,8 +9,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{5C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{7F8061D5-D122-4567-9D3A-4E370F09EE0C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Windows", "Windows", "{56DE536C-26D8-4C9C-BA53-AFF40107DC1A}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{99283EA7-20FC-4786-98FC-12607945058A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildingBlocks", "BuildingBlocks", "{89EE6636-2AFB-4E15-AD68-81976D07C926}"
@@ -19,9 +17,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Fingerprint", "Fingerprint"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Fingerprint", "Fingerprint", "{956A51CC-7FFC-4056-85E8-DA9A062B0F4D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MxFaceSamples.UI.Fingerprint", "src\Services\UI\Fingerprint\MxFaceSamples.UI.Fingerprint\MxFaceSamples.UI.Fingerprint.csproj", "{74DD0D30-027F-48D6-8363-A305C72B6D9E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MxFaceSamples.UI.Fingerprint", "src\Services\UI\Fingerprint\MxFaceSamples.UI.Fingerprint\MxFaceSamples.UI.Fingerprint.csproj", "{74DD0D30-027F-48D6-8363-A305C72B6D9E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MxFaceSamples.BuildingBlocks.Fingerprint", "src\BuildingBlocks\Fingerprint\MxFaceSamples.BuildingBlocks.Fingerprint\MxFaceSamples.BuildingBlocks.Fingerprint.csproj", "{AEDB5813-9173-459A-9036-37E76C335CCF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MxFaceSamples.BuildingBlocks.Fingerprint", "src\BuildingBlocks\Fingerprint\MxFaceSamples.BuildingBlocks.Fingerprint\MxFaceSamples.BuildingBlocks.Fingerprint.csproj", "{AEDB5813-9173-459A-9036-37E76C335CCF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Fingerprint", "Fingerprint", "{F34BF272-4D77-41EC-ACE1-5E575A4C58DE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MxFaceSamples.UI.Fingerprint.Infrastructure", "src\Services\UI\Fingerprint\MxFaceSamples.UI.Fingerprint.Infrastructure\MxFaceSamples.UI.Fingerprint.Infrastructure.csproj", "{2A93B6D0-2C33-46B2-81A8-3A9A5F13A454}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,6 +39,10 @@ Global
 		{AEDB5813-9173-459A-9036-37E76C335CCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AEDB5813-9173-459A-9036-37E76C335CCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AEDB5813-9173-459A-9036-37E76C335CCF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A93B6D0-2C33-46B2-81A8-3A9A5F13A454}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A93B6D0-2C33-46B2-81A8-3A9A5F13A454}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A93B6D0-2C33-46B2-81A8-3A9A5F13A454}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A93B6D0-2C33-46B2-81A8-3A9A5F13A454}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -44,13 +50,14 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{5C5E7C10-8114-4525-820E-AB7D1C90201A} = {6E8E87CF-9D6C-4DDA-8848-9600AAF3E83F}
 		{7F8061D5-D122-4567-9D3A-4E370F09EE0C} = {6E8E87CF-9D6C-4DDA-8848-9600AAF3E83F}
-		{56DE536C-26D8-4C9C-BA53-AFF40107DC1A} = {5C5E7C10-8114-4525-820E-AB7D1C90201A}
 		{99283EA7-20FC-4786-98FC-12607945058A} = {5C5E7C10-8114-4525-820E-AB7D1C90201A}
 		{89EE6636-2AFB-4E15-AD68-81976D07C926} = {6E8E87CF-9D6C-4DDA-8848-9600AAF3E83F}
 		{C30B05AA-9DE5-4A16-B7B5-2843426D3176} = {89EE6636-2AFB-4E15-AD68-81976D07C926}
 		{956A51CC-7FFC-4056-85E8-DA9A062B0F4D} = {99283EA7-20FC-4786-98FC-12607945058A}
 		{74DD0D30-027F-48D6-8363-A305C72B6D9E} = {956A51CC-7FFC-4056-85E8-DA9A062B0F4D}
 		{AEDB5813-9173-459A-9036-37E76C335CCF} = {C30B05AA-9DE5-4A16-B7B5-2843426D3176}
+		{F34BF272-4D77-41EC-ACE1-5E575A4C58DE} = {7F8061D5-D122-4567-9D3A-4E370F09EE0C}
+		{2A93B6D0-2C33-46B2-81A8-3A9A5F13A454} = {956A51CC-7FFC-4056-85E8-DA9A062B0F4D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7DD2F6ED-3E78-40B2-BAD2-0B3FB68FB659}

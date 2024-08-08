@@ -1,5 +1,5 @@
-﻿
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using MxFaceSamples.BuildingBlocks.Fingerprint.Interfaces;
 using MxFaceSamples.BuildingBlocks.Fingerprint.Services;
 using MxFaceSamples.UI.Fingerprint.Extensions;
 using MxFaceSamples.UI.Fingerprint.Infrastructure.Data.Contexts;
@@ -23,13 +23,14 @@ public static class Extensions
             });
         });
 
-        builder.Services.AddHttpClient<DeviceService>(o => o.BaseAddress = new(Configuration["MxFace__ClientServiceUrl"]))
-            .AddMFScanKey();
+        //builder.Services.AddScoped<IDeviceService, DeviceService>();
 
-        builder.Services.AddHttpClient<FingerprintCapturingService>(o => o.BaseAddress = new(Configuration["MxFace__ClientServiceUrl"]))
-            .AddMFScanKey();
+        builder.Services.AddHttpClient<DeviceService>(o => o.BaseAddress = new(Configuration["MxFace:ClientServiceUrl"]));
 
-        builder.Services.AddHttpClient<FingerprintMatchingService>(o => o.BaseAddress = new(Configuration["MxFace__MxFaceApiEndpointUrl"]))
+
+        builder.Services.AddHttpClient<FingerprintCapturingService>(o => o.BaseAddress = new(Configuration["MxFace:ClientServiceUrl"]));
+
+        builder.Services.AddHttpClient<FingerprintMatchingService>(o => o.BaseAddress = new(Configuration["MxFace:MxFaceApiEndpointUrl"]))
             .AddSubscriptionKey();
 
     }

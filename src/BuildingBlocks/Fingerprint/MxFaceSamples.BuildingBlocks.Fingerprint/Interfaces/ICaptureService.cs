@@ -1,4 +1,5 @@
-﻿using MorFin_Auth;
+﻿//using MorFin_Auth;
+using MxFaceSamples.BuildingBlocks.Fingerprint.Models;
 using System.Reflection;
 
 namespace MxFaceSamples.BuildingBlocks.Fingerprint.Interfaces;
@@ -15,7 +16,7 @@ public interface ICaptureService
     /// 0 = Capture started
     /// 0! = Capture start failed
     /// </returns>
-    Task<int> StartCaptureAsync(int Timeout = 10000, int MinimumQuality = 40);
+    Task<CaptureViewModel> StartCaptureAsync(int Timeout = 10, int MinimumQuality = 60);
 
     /// <summary>
     /// Forcefully stops the capture process
@@ -25,20 +26,6 @@ public interface ICaptureService
     /// 0! = Capture stop failed
     /// </returns>
     Task<int> StopCaptureAsync();
-
-    /// <summary>
-    /// Used forsynchronously capture.
-    /// Requires sucessful device initialization.
-    /// </summary>
-    /// <param name="Qlt"></param>
-    /// <param name="Nfiq"></param>
-    /// <param name="TimeOut"></param>
-    /// <param name="MinimumQuality"></param>
-    /// <returns>
-    /// 0 = Capture started
-    /// 0! = Capture start failed
-    /// </returns>
-    Task<int> StartAutoCaptureAsync(out int Qlt, out int Nfiq, int TimeOut = 10000, int MinimumQuality = 40);
 
     /// <summary>
     /// Get the fingerprint image.
@@ -51,19 +38,6 @@ public interface ICaptureService
     /// 0 = Success
     /// 0! = Failed
     /// </returns>
-    Task<int> GetFringerprintImageAsync(out byte[] image, IMAGE_FORMAT Format, int CompressionRatio);
-
-    /// <summary>
-    /// Gets the fingerprint template.
-    /// Requires sucessful fingerprint capture.
-    /// </summary>
-    /// <param name="template"></param>
-    /// <param name="Format"><see cref="MorFin_Auth.TEMPLATE_FORMAT"></param>
-    /// <param name="CompressionRatio"></param>
-    /// <returns>
-    /// 0 = Success
-    /// 0! = Failed
-    /// </returns>
-    Task<int> GetFingerprintTemplateAsync(out byte[] template, TEMPLATE_FORMAT Format, int CompressionRatio);
+    //Task<int> GetFringerprintImageAsync(out byte[] image, IMAGE_FORMAT Format, int CompressionRatio);
 
 }

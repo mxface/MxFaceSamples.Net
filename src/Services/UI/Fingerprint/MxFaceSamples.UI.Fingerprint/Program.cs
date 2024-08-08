@@ -2,10 +2,13 @@ using MxFaceSamples.UI.Fingerprint.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddApplicationServices();
+
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+//builder.Services.AddMvc().AddRazorOptions(options => options.AllowRecompilingViewsOnFileChange = true);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -25,3 +28,4 @@ app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
 app.Run();
+

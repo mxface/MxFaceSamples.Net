@@ -50,7 +50,7 @@ public static class HttpClientExtensions
             await request.Content.ReadFromJsonAsync<Dictionary<string, string>>(cancellationToken: cancellationToken).ContinueWith(task =>
             {
                 var content = task.Result;
-                content.Add("ClientKey", _configuration["MxFace__ClientKey"]);
+                content.Add("ClientKey", _configuration["MxFace:ClientKey"]);
                 request.Content = new StringContent(JsonSerializer.Serialize(content), Encoding.UTF8, "application/json");
             });
 
@@ -75,7 +75,7 @@ public static class HttpClientExtensions
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            request.Headers.Add("subscriptionkey", _configuration["MxFace__SubscriptionKey"]);
+            request.Headers.Add("subscriptionkey", _configuration["MxFace:SubscriptionKey"]);
 
             return await base.SendAsync(request, cancellationToken);
         }

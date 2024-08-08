@@ -1,4 +1,6 @@
-﻿using MorFin_Auth;
+﻿//using MorFin_Auth;
+
+using MxFaceSamples.BuildingBlocks.Fingerprint.Models;
 
 namespace MxFaceSamples.BuildingBlocks.Fingerprint.Interfaces;
 
@@ -39,12 +41,18 @@ public interface IDeviceService
     /// <param name="deviceList"></param>
     /// <param name="deviceCount"></param>
     /// <returns></returns>
-    Task<int> GetSupportedDevices(DEVICE_LIST[] deviceList);
+    Task<int> GetSupportedDevices(List<string> deviceList);
 
     /// <summary>
     /// Uninitializes the connected fingerprint device
     /// </summary>
     /// <returns></returns>
     Task UnInit();
+
+    /// <summary>
+    /// Gets the Information of Connected Device 
+    /// </summary>
+    /// <returns></returns>
+    Task<Device> GetDeviceInfoAsync(string deviceName);
 
 }

@@ -1,0 +1,324 @@
+﻿@page "/"
+@using MxFaceSamples.BuildingBlocks.Iris.Models
+@using MxFaceSamples.BuildingBlocks.Iris.Services
+@using MxFaceSamples.UI.Iris
+@inject DeviceService deviceService
+@inject IrisCapturingService capturingServices
+@inject IrisMatchingService matchingServices
+
+<PageTitle>MxFace Iris Sample</PageTitle>
+
+@if (Device is null)
+{
+    <p>No Device Found!</p>
+}
+else
+{
+    <!-- Capture Section -->
+
+    <h3 class="text-primary"><b>Capture</b></h3>
+    <div class="panel p-4 mb-5 border rounded shadow-sm bg-light">
+
+        <div class="row mb-4">
+            <div class="col-md-4 d-flex align-items-center justify-content-center">
+                <button id="btnCapture1" class="btn btn-primary btn-lg w-75" @onclick="@(() => CaptureIrisAsync("capture1"))">
+                    <i class="fas fa-camera"></i> Capture 1
+                </button>
+            </div>
+            <div class="col-md-4 d-flex justify-content-center align-items-center">
+                @if (IrisData is not null)
+                {
+                    @if (captureIris.ContainsKey("capture1"))
+                    {
+                        <img id="imgIris" alt="Capture 1" class="img-thumbnail" style="max-width: 145px; max-height: 166px;" src="data:image /bmp;base64,@captureIris["capture1"]" />
+                    }
+                    else
+                    {
+                        <img id="imgIris" alt="Capture 1" class="img-thumbnail border-primary" style="max-width: 145px; max-height: 166px;" />
+                    }
+                }
+                else
+                {
+                    <img id="imgIris" alt="Capture 1" class="img-thumbnail border-primary" style="max-width: 145px; max-height: 166px;" />
+                }
+            </div>
+            <div class="col-md-4">
+                <div class="border p-3 rounded bg-white shadow-sm">
+                    <div class="mb-2"><strong>Serial No:</strong> @Device.DeviceInfo.SerialNo</div>
+                    <div class="mb-2"><strong>Model:</strong> @Device.DeviceInfo.Model</div>
+                    <div class="mb-2"><strong>Make:</strong> @Device.DeviceInfo.Make</div>
+                    <div class="mb-2"><strong>Status:</strong> <span class="text-warning">@Device.ErrorDescription</span></div>
+                </div>
+            </div>
+        </div>
+
+        @if (IrisData is not null)
+        {
+            @if (captureIris.ContainsKey("capture1"))
+            {
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="txtStatus" class="form-label">Status:</label>
+                        <input type="text" value="@IrisData.ErrorDescription" id="txtStatus" class="form-control" disabled />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="txtImageInfo" class="form-label">Quality:</label>
+                        <input type="text" value="@IrisData.Quality" id="txtImageInfo" class="form-control" disabled />
+                    </div>
+                    <div class="col-md-12">
+                        <label for="txtIsoTemplate" class="form-label">Image Data:</label>
+                        <textarea id="txtIsoTemplate" class="form-control" rows="3" disabled>@IrisData.BitmapData</textarea>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+
+
+    <!-- Enroll Section -->
+
+
+    <h3 class="text-primary mb-4"><b>Enroll</b></h3>
+    <div class="panel p-4 mb-4 border rounded shadow-sm bg-light">
+
+        <div class="row g-3 align-items-center">
+            <div class="col-md-1 pt-1">
+                <label for="txtGroup" class="form-label fw-bold text-secondary">Group:</label>
+            </div>
+            <div class="col-md-3">
+                <input type="text" id="txtGroup" @bind="enrollRequest.Group" placeholder="Enter group name" class="form-control" required />
+            </div>
+            <div class="col-md-1 pt-1">
+                <label for="enrollRequest.ExternalId" class="form-label fw-bold text-secondary">Code:</label>
+            </div>
+            <div class="col-md-4">
+                <input type="text" @bind="enrollRequest.ExternalId" id="enrollRequest.ExternalId" class="form-control" />
+
+            </div>
+        </div>
+
+        <div class="row g-3 align-items-center mt-3">
+            <div class="col-md-2">
+                <button id="btnEnroll" class="btn btn-primary py-1 px-3" @onclick="EnrollIrisAsync">Enroll</button>
+            </div>
+
+
+            @if (enrollResponse is not null)
+            {
+                <div class="row g-3 align-items-center mt-4">
+                    <div class="col-md-2 pt-2">
+                        <label for="enrollResponse.Code" class="form-label fw-bold text-secondary">Response Code:</label>
+                    </div>
+                    <div class="col-md-2">
+                        <p id="enrollResponse.Code" class="form-control-plaintext text-success">@enrollResponse.Code</p>
+                    </div>
+                    <div class="col-md-1 pt-2">
+                        <label for="enrollResponse.Message" class="form-label fw-bold text-secondary">Message:</label>
+                    </div>
+                    <div class="col-md-2">
+                        <p id="enrollResponse.Message" class="form-control-plaintext text-success">@enrollResponse.Message</p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+
+    <!-- Search Section -->
+
+    <h3 class="text-primary mb-4"><b>Search</b></h3>
+    <div class="panel p-4 mb-5 border rounded shadow-sm bg-light">
+        <div class="row g-3 align-items-center mb-4">
+            <div class="col-md-4">
+                <button id="btnMatch" class="btn btn-primary w-100" @onclick="SearchIrisAsync">Search</button>
+            </div>
+        </div>
+
+        @if (searchResponse is not null)
+        {
+            @if (searchResponse?.MatchResult?.Count > 0)
+            {
+                <div class="row g-3 mb-3">
+                    <div class="col-md-3">
+                        <label for="txtStatus" class="form-label fw-bold text-secondary">Message:</label>
+                    </div>
+                    <div class="col-md-9">
+                        <input type="text" value="@searchResponse.Message" id="txtStatus" class="form-control" disabled />
+                    </div>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-3">
+                        <label for="txtImageInfo" class="form-label fw-bold text-secondary">Matching Score:</label>
+                    </div>
+                    <div class="col-md-9">
+                        <input type="text" value="@searchResponse.MatchResult[0].MatchingScore" id="txtImageInfo" class="form-control" disabled />
+                    </div>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-3">
+                        <label for="txtIsoTemplate" class="form-label fw-bold text-secondary">Image Data:</label>
+                    </div>
+                    <div class="col-md-9">
+                        <textarea id="txtIsoTemplate" class="form-control" rows="3" disabled>@IrisData?.BitmapData</textarea>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <p>No match results found!</p>
+            }
+        }
+
+    </div>
+
+
+    <!--Match Section -->
+
+    <h3 class="text-primary mb-4"><b>Match</b></h3>
+    <div class="panel p-4 mb-5 border rounded shadow-sm bg-light">
+        <div class="row g-3 align-items-center mt-3">
+            <div class="col-md-2">
+                <button id="btnEnroll" class="btn btn-primary py-1 px-3" @onclick="@(() => CaptureIrisAsync("capture2"))">Capture 2</button>
+            </div>
+            <div class="col-md-2">
+                <button id="btnEnroll" class="btn btn-primary py-1 px-3" @onclick="MatchIrisAsync">Match</button>
+            </div>
+            <div class="col-md-2 d-flex justify-content-center align-items-center">
+                @if (IrisData is not null)
+                {
+                    @if (captureIris.ContainsKey("capture1"))
+                    {
+                        <img id="imgIris" alt="Capture 1" class="img-thumbnail" style="max-width: 145px; max-height: 166px;" src="data:image /bmp;base64,@captureIris["capture1"]" />
+                    }
+                    else
+                    {
+                        <img id="imgIris" alt="Capture 1" class="img-thumbnail border-primary" style="max-width: 145px; max-height: 166px;" />
+                    }
+                }
+                else
+                {
+                    <img id="imgIris" alt="Capture 1" class="img-thumbnail border-primary" style="max-width: 145px; max-height: 166px;" />
+                }
+            </div>
+            <div class="col-md-2 d-flex justify-content-center align-items-center">
+                @if (IrisData is not null)
+                {
+                    @if (captureIris.ContainsKey("capture2"))
+                    {
+                        <img id="imgIris" alt="Capture 2" class="img-thumbnail" style="max-width: 145px; max-height: 166px;" src="data:image /bmp;base64,@captureIris["capture2"]" />
+                    }
+                    else
+                    {
+                        <img id="imgIris" alt="Capture 2" class="img-thumbnail border-primary" style="max-width: 145px; max-height: 166px;" />
+                    }
+                }
+                else
+                {
+                    <img id="imgIris" alt="Capture 2" class="img-thumbnail border-primary" style="max-width: 145px; max-height: 166px;" />
+                }
+
+            </div>
+
+        </div>
+
+        @if (matchResponse is not null)
+        {
+            <div class="row g-3 mb-3">
+                <div class="col-md-3">
+                    <label for="txtStatus" class="form-label fw-bold text-secondary">Match:</label>
+                </div>
+                <div class="col-md-9">
+                    <input type="text" value="@matchResponse.Matched" id="txtStatus" class="form-control" disabled />
+                </div>
+            </div>
+
+        }
+
+    </div>
+
+}
+
+
+
+@code {
+    Device? Device;
+
+    CaptureViewModel? IrisData;
+
+    EnrollmentRequest? enrollRequest;
+
+    EnrollmentResponse? enrollResponse;
+
+    SearchRequest? searchRequest;
+
+    SearchResponse? searchResponse;
+
+    MatchRequest? matchRequest;
+
+    MatchResponse? matchResponse;
+
+    // private int captureCount = 1;
+
+    private Dictionary<string, string> captureIris = new Dictionary<string, string>();
+
+    // string IrisBitMap;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        Device = await deviceService.GetDeviceInfoAsync();
+
+        enrollRequest ??= new EnrollmentRequest();
+        searchRequest ??= new SearchRequest();
+        matchRequest ??= new MatchRequest();
+
+    }
+
+    private async Task CaptureIrisAsync(string captureKey)
+    {
+        IrisData = await capturingServices.StartCaptureAsync(10);
+        // IrisBitMap = "data:image/bmp;base64," + IrisData.BitmapData;
+        // enrollRequest.Iris = IrisData.BitmapData;
+
+        if (enrollRequest is not null)
+        {
+
+            captureIris[captureKey] = IrisData.BitmapData;
+
+            if (captureKey == "capture1")
+            {
+                matchRequest.Iris1 = IrisData.BitmapData;
+            }
+            else
+            {
+                matchRequest.Iris2 = IrisData.BitmapData;
+            }
+
+            enrollRequest.Iris = IrisData.BitmapData;
+            searchRequest.Iris = IrisData.BitmapData;
+        }
+
+    }
+
+    private async Task EnrollIrisAsync()
+    {
+        enrollResponse = await matchingServices.EnrollAsync(enrollRequest);
+        if (searchRequest is not null)
+        {
+            searchRequest.Group = enrollRequest.Group;
+        }
+    }
+
+    private async Task SearchIrisAsync()
+    {
+        searchResponse = await matchingServices.SearchAsync(searchRequest);
+    }
+
+    private async Task MatchIrisAsync()
+    {
+        matchResponse = await matchingServices.MatchAsync(matchRequest);
+    }
+
+}

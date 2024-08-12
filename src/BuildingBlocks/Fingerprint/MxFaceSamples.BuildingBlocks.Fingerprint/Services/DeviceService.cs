@@ -115,14 +115,22 @@ public class DeviceService(HttpClient httpClient, ILogger<DeviceService> logger)
         return ((int)statusCode >= 200) && ((int)statusCode <= 299);
     }
 
-    public async Task<Device> GetDeviceInfoAsync(string deviceName)
-    {
-        var response = (await this.PostRequestAsync("info", new { ConnectedDvc = deviceName })).FirstOrDefault();
+     public async Task<Device> GetDeviceInfoAsync(string deviceName)
+ {
+     var response = (await this.PostRequestAsync("info", new { ConnectedDvc = deviceName })).FirstOrDefault();
 
-        if (IsSuccessStatusCode(response.Key))
-        {
-            return JsonSerializer.Deserialize<Device>(response.Value);
-        }
-        else return null;
-    }
+     if (IsSuccessStatusCode(response.Key))
+     {
+         var deviceResponse = JsonSerializer.Deserialize<Device>(response.Value);
+         if (deviceResponse.ErrorCode == "0")
+         {
+             return JsonSerializer.Deserialize<Device>(response.Value);
+         }
+         else
+         {
+             return null;
+         }
+     }
+     else return null;
+ }
 }

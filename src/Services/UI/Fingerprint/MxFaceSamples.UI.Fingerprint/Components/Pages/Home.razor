@@ -1,5 +1,5 @@
 ﻿@page "/"
-@* @using MxFaceSamples.BuildingBlocks.Fingerprint.Interfaces *@
+@using MxFaceSamples.BuildingBlocks.Fingerprint.Interfaces
 @using MxFaceSamples.BuildingBlocks.Fingerprint.Models
 @using MxFaceSamples.BuildingBlocks.Fingerprint.Services
 @using MxFaceSamples.UI.Fingerprint.Services
@@ -7,295 +7,235 @@
 @inject FingerprintCapturingService capturingServices
 @inject FingerprintMatchingService matchingServices
 
-<PageTitle>MorFin Auth Web Test</PageTitle>
-
+<PageTitle>MxFace Fingerprint Sample</PageTitle>
 
 @if (Device is null)
 {
-    <p>No Device Found!</p>
+    <div class="alert alert-warning text-center">
+        <strong>No Device Found!</strong>
+    </div>
 }
 else
 {
-    @* Capture *@
-    <div class="panel">
+    <div class="container mt-4">
+        @* Capture *@
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-primary text-white">
+                Capture Fingerprint
+            </div>
+            <div class="card-body">
+                <div class="row mb-2">
+                    <div class="col-md-4">
+                        <button class="btn btn-primary w-100" @onclick="@(() => CaptureFingerPrintAsync("capture1"))">
+                            Capture 1
+                        </button>
+                    </div>
 
-        @* Title with blue background *@
+                    <div class="col-md-4 text-center">
+                        <h6>FingerPrint 1</h6>
+                        @if (FingerprintData is not null && captureFingerprints.ContainsKey("capture1"))
+                        {
+                            <img id="imgFinger" alt="Finger Image" class="img-thumbnail img-fluid" style="width: 150px; height: 200px;" src="data:image/bmp;base64,@captureFingerprints["capture1"]" />
+                        }
+                        else
+                        {
+                            <div class="fingerprint-placeholder img-thumbnail" style="width: 150px; height: 200px;"></div>
+                        }
+                    </div>
 
-        @* Main Table *@
-        <table class="mb-2">
-            <tr>
-                @* Buttons *@
-                <td width="300px;">
-                    <table align="left" border="0" width="50%" class="mt-2">
-                        <tr>
-                            <td>
-                                <input type="submit" id="btnCapture" value="Capture" class="btn btn-primary m-1" @onclick="CaptureFingerPrintAsync" />
-                            </td>
-                        </tr>
-                    </table>
-                </td>
 
-                @* Finger Image *@
-
-                <td>
-                    <table align="left" border="0" style="width: 100%; " class="mt-n5 ml-n5">
-                        <tr>
-                            <td width="145px" height="190px" align="center" class="img">
-                                @if (FingerprintData is not null)
-                                {
-                                    <img id="imgFinger" alt="Finger Image" width="145px" height="166px" src=@FingerprintBitMap />
-                                }
-                                else
-                                {
-                                    <img id="imgFinger" alt="Finger Image" width="145px" height="166px" />
-                                }
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-
-                @* Serial no *@
-                <td>
-                    <table align="left" border="0" style="width: 116%;" class="mt-n10 ml-n4">
-                        <tr>
-                            <td align="left">Serial No:</td>
-                            <td align="left" id="">@Device.DeviceInfo.SerialNo</td>
-                        </tr>
-                        <tr>
-                            <td align="left">Model:</td>
-                            <td align="left" id="">@Device.DeviceInfo.Model</td>
-                        </tr>
-                        <tr>
-                            <td align="left">Make:</td>
-                            <td align="left" id="">@Device.DeviceInfo.Make</td>
-                        </tr>
-                        <tr>
-                            <td align="left">Status:</td>
-                            <td align="left" id="">@Device.ErrorDescription</td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-
-        @if (FingerprintData is not null)
-        {
-            <table width="100%" class="mt-2">
-                <tr>
-                    <td width="220px" class="pl-3">Status:</td>
-                    <td class="pr-2">
-                        <input type="text" value="@FingerprintData.ErrorDescription" id="txtStatus" class="form-control" disabled="disabled" />
-                    </td>
-                </tr>
-                <tr>
-                    <td width="220px" class="pl-3">Quality:</td>
-                    <td class="pr-2">
-                        <input type="text" value="@FingerprintData.Quality" id="txtImageInfo" class="form-control" disabled="disabled" />
-                    </td>
-                </tr>
-                <tr>
-                    <td class="pl-3">Image Data</td>
-                    <td>
-                        <textarea id="txtIsoTemplate" class="form-control" style="height: 50px; resize: none" disabled="disabled">@FingerprintData.BitmapData</textarea>
-                    </td>
-                </tr>
-                @*             <tr>
-        <td class="pl-3">Base64Encoded Image Data</td>
-        <td>
-        <textarea id="txtIsoImage" class="form-control" style="height: 50px; resize: none" disabled="disabled"></textarea>
-        </td>
-        </tr> *@
-            </table>
-        }
-    </div>
-
-    @* Enroll *@
-    <div class="panel">
-
-        @* Title with blue background *@
-
-        @* Main Table *@
-        <table class="mb-2">
-            <tr>
-                @* Buttons *@
-                <td width="300px;">
-                    <table align="left" border="0" width="50%" class="mt-2">
-                        <tr>
-                            <td>
-                                @* Group Textfield *@
-                                <input type="text" id="txtGroup" @bind=enroll.Group placeholder="Group" class="form-control mb-2" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="submit" id="btnEnroll" value="Enroll" class="btn btn-primary m-1" @onclick="EnrollFingerPrintAsync" />
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-
-                @* Request *@
-
-                <div>
+                    <div class="col-md-4">
+                        <div><strong>Serial No:</strong> @Device.DeviceInfo.SerialNo</div>
+                        <div><strong>Model:</strong> @Device.DeviceInfo.Model</div>
+                        <div><strong>Make:</strong> @Device.DeviceInfo.Make</div>
+                        <div><strong>Status:</strong> @Device.ErrorDescription</div>
+                    </div>
                 </div>
 
-                @* Serial no *@
-                <td>
-                    <table align="left" border="0" style="width: 116%;" class="mt-n10 ml-n4">
-                        <tr>
-                            <td align="left">Serial No:</td>
-                            <td align="left" id="">@Device.DeviceInfo.SerialNo</td>
-                        </tr>
-                        <tr>
-                            <td align="left">Model:</td>
-                            <td align="left" id="">@Device.DeviceInfo.Model</td>
-                        </tr>
-                        <tr>
-                            <td align="left">Make:</td>
-                            <td align="left" id="">@Device.DeviceInfo.Make</td>
-                        </tr>
-                        <tr>
-                            <td align="left">Status:</td>
-                            <td align="left" id="">@Device.ErrorDescription</td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
+                @if (FingerprintData is not null)
+                {
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <div><strong>Status:</strong></div>
+                            <input type="text" value="@FingerprintData.ErrorDescription" class="form-control" disabled />
+                        </div>
+                        <div class="col-md-6">
+                            <div><strong>Quality:</strong></div>
+                            <input type="text" value="@FingerprintData.Quality" class="form-control" disabled />
+                        </div>
+                        <div class="col-md-12 mt-2">
+                            <div><strong>Image Data:</strong></div>
+                            <textarea class="form-control" style="height: 50px; resize: none" disabled>@FingerprintData.BitmapData</textarea>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
 
-        @if (FingerprintData is not null)
-        {
-            <table width="100%" class="mt-2">
-                <tr>
-                    <td width="220px" class="pl-3">Status:</td>
-                    <td class="pr-2">
-                        <input type="text" value="@FingerprintData.ErrorDescription" id="txtStatus" class="form-control" disabled="disabled" />
-                    </td>
-                </tr>
-                <tr>
-                    <td width="220px" class="pl-3">Quality:</td>
-                    <td class="pr-2">
-                        <input type="text" value="@FingerprintData.Quality" id="txtImageInfo" class="form-control" disabled="disabled" />
-                    </td>
-                </tr>
-                <tr>
-                    <td class="pl-3">Image Data</td>
-                    <td>
-                        <textarea id="txtIsoTemplate" class="form-control" style="height: 50px; resize: none" disabled="disabled">@FingerprintData.BitmapData</textarea>
-                    </td>
-                </tr>
-                @*             <tr>
-        <td class="pl-3">Base64Encoded Image Data</td>
-        <td>
-        <textarea id="txtIsoImage" class="form-control" style="height: 50px; resize: none" disabled="disabled"></textarea>
-        </td>
-        </tr> *@
-            </table>
-        }
-    </div>
+        @* Enroll *@
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-success text-white">
+                Enroll Fingerprint
+            </div>
+            <div class="card-body">
+                <div class="row mb-2">
+                    <div class="col-md-3">Code:</div>
+                    <div class="col-md-9">
+                        <input type="text" @bind="enrollRequest.ExternalId" class="form-control" />
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-3">
+                        <input type="text" @bind="enrollRequest.Group" placeholder="Group" class="form-control mb-2" required />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <button class="btn btn-success w-100" @onclick="EnrollFingerPrintAsync">
+                            Enroll
+                        </button>
+                    </div>
+                </div>
 
-    @* Search *@
-    <div class="panel">
+                @if (enrollResponse is not null)
+                {
+                    <div class="mt-3">
+                        <div><strong>Code:</strong> @enrollResponse.Code</div>
+                        <div><strong>Message:</strong> @enrollResponse.Message</div>
+                    </div>
+                }
+            </div>
+        </div>
 
-        @* Title with blue background *@
+        @* Search *@
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-info text-white">
+                Search Fingerprint
+            </div>
+            <div class="card-body">
+                <button class="btn btn-info w-100 mb-3" @onclick="SearchFingerPrintAsync">
+                    Search
+                </button>
 
-        @* Main Table *@
-        <table class="mb-2">
-            <tr>
-                @* Buttons *@
-                <td width="300px;">
-                    <table align="left" border="0" width="50%" class="mt-2">
-                        <tr>
-                            <td>
-                                <input type="submit" id="btnMatch" value="Search" class="btn btn-primary m-1" />
-                            </td>
-                        </tr>
-                    </table>
-                </td>
+                @if (searchResponse is not null)
+                {
+                    if (searchResponse.MatchResult.Count > 0)
+                    {
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <div><strong>Message:</strong></div>
+                                <input type="text" value="@searchResponse.Message" class="form-control" disabled />
+                            </div>
+                            <div class="col-md-6">
+                                <div><strong>Matching Score:</strong></div>
+                                <input type="text" value="@searchResponse.MatchResult[0].MatchingScore" class="form-control" disabled />
+                            </div>
+                            <div class="col-md-12 mt-2">
+                                <div><strong>Image Data:</strong></div>
+                                <textarea class="form-control" style="height: 50px; resize: none" disabled>@FingerprintData.BitmapData</textarea>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-warning">
+                            No Fingerprint Found!
+                        </div>
+                    }
+                }
+            </div>
+        </div>
 
-                @* Finger Image *@
+        @* Match *@
+        <div class="card shadow-sm">
+            <div class="card-header bg-secondary text-white">
+                Match Fingerprints
+            </div>
+            <div class="card-body">
+                <div class="row mb-2">
+                    <div class="col-md-3">
+                        <button class="btn btn-secondary w-100" @onclick="@(() => CaptureFingerPrintAsync("capture2"))">
+                            Capture 2
+                        </button>
+                    </div>
+                    <div class="col-md-3">
+                        <button class="btn btn-secondary w-100" @onclick="MatchFingerPrintAsync">
+                            Match
+                        </button>
+                    </div>
 
-                <td>
-                    <table align="left" border="0" style="width: 100%; " class="mt-n5 ml-n5">
-                        <tr>
-                            <td width="145px" height="190px" align="center" class="img">
-                                @if (FingerprintData is not null)
-                                {
-                                    <img id="imgFinger" alt="Finger Image" width="145px" height="166px" src=@FingerprintBitMap />
-                                }
-                                else
-                                {
-                                    <img id="imgFinger" alt="Finger Image" width="145px" height="166px" />
-                                }
-                            </td>
-                        </tr>
-                    </table>
-                </td>
+                    <div class="col-md-4 text-center">
+                        <h6>FingerPrint 1</h6>
+                        @if (FingerprintData is not null && captureFingerprints.ContainsKey("capture1"))
+                        {
+                            <img id="imgFinger" alt="Finger Image" class="img-thumbnail img-fluid" style="width: 150px; height: 200px;" src="data:image/bmp;base64,@captureFingerprints["capture1"]" />
+                        }
+                        else
+                        {
+                            <div class="fingerprint-placeholder img-thumbnail" style="width: 150px; height: 200px;"></div>
+                        }
+                    </div>
 
-                @* Serial no *@
-                <td>
-                    <table align="left" border="0" style="width: 116%;" class="mt-n10 ml-n4">
-                        <tr>
-                            <td align="left">Serial No:</td>
-                            <td align="left" id="">@Device.DeviceInfo.SerialNo</td>
-                        </tr>
-                        <tr>
-                            <td align="left">Model:</td>
-                            <td align="left" id="">@Device.DeviceInfo.Model</td>
-                        </tr>
-                        <tr>
-                            <td align="left">Make:</td>
-                            <td align="left" id="">@Device.DeviceInfo.Make</td>
-                        </tr>
-                        <tr>
-                            <td align="left">Status:</td>
-                            <td align="left" id="">@Device.ErrorDescription</td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
 
-        @if (FingerprintData is not null)
-        {
-            <table width="100%" class="mt-2">
-                <tr>
-                    <td width="220px" class="pl-3">Status:</td>
-                    <td class="pr-2">
-                        <input type="text" value="@FingerprintData.ErrorDescription" id="txtStatus" class="form-control" disabled="disabled" />
-                    </td>
-                </tr>
-                <tr>
-                    <td width="220px" class="pl-3">Quality:</td>
-                    <td class="pr-2">
-                        <input type="text" value="@FingerprintData.Quality" id="txtImageInfo" class="form-control" disabled="disabled" />
-                    </td>
-                </tr>
-                <tr>
-                    <td class="pl-3">Image Data</td>
-                    <td>
-                        <textarea id="txtIsoTemplate" class="form-control" style="height: 50px; resize: none" disabled="disabled">@FingerprintData.BitmapData</textarea>
-                    </td>
-                </tr>
-                @*             <tr>
-        <td class="pl-3">Base64Encoded Image Data</td>
-        <td>
-        <textarea id="txtIsoImage" class="form-control" style="height: 50px; resize: none" disabled="disabled"></textarea>
-        </td>
-        </tr> *@
-            </table>
-        }
+                    <div class="col-md-3 text-center">
+                        <h6>FingerPrint 2</h6>
+                        @if (FingerprintData is not null && captureFingerprints.ContainsKey("capture2"))
+                        {
+                            <img id="imgFinger2" alt="Finger Image" class="img-thumbnail" src="data:image/bmp;base64,@captureFingerprints["capture2"]" style="width: 150px; height: 200px;" />
+                        }
+                        else
+                        {
+                            <div class="fingerprint-placeholder img-thumbnail" style="width: 150px; height: 200px;"></div>
+                        }
+                    </div>
+                </div>
+
+                @if (matchResponse is not null)
+                {
+                    <div class="row mt-2">
+                        <div class="col-md-3">Code:</div>
+                        <div class="col-md-9">
+                            <input type="text" value="@matchResponse.Code" class="form-control" disabled />
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-3">Message:</div>
+                        <div class="col-md-9">
+                            <input type="text" value="@matchResponse.Message" class="form-control" disabled />
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-3">Matching Score:</div>
+                        <div class="col-md-9">
+                            <input type="text" value="@matchResponse.MatchingScore" class="form-control" disabled />
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-3">Matched:</div>
+                        <div class="col-md-9">
+                            <input type="text" value="@matchResponse.Matched" class="form-control" disabled />
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
     </div>
 }
 
 @code {
-    Device Device;
-
-    CaptureViewModel FingerprintData;
-
-    EnrollmentRequest enroll;
-
-    string FingerprintBitMap;
+    // Existing code remains unchanged
+    Device? Device;
+    CaptureViewModel? FingerprintData;
+    CaptureViewModel? FingerprintData2;
+    EnrollmentRequest? enrollRequest;
+    EnrollmentResponse? enrollResponse;
+    SearchRequest? searchRequest;
+    SearchResponse? searchResponse;
+    string? FingerprintBitMap;
+    MatchResponse? matchResponse;
+    MatchRequest? matchRequest;
+    private int captureCount = 0;
+    private Dictionary<string, string> captureFingerprints = new Dictionary<string, string>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -303,17 +243,52 @@ else
         await deviceService.GetConnectedDevices(DeviceNames);
 
         Device = await deviceService.GetDeviceInfoAsync(DeviceNames[0]);
+
+        enrollRequest ??= new EnrollmentRequest();
+        searchRequest ??= new SearchRequest();
+        matchRequest ??= new MatchRequest();
     }
 
-    private async Task CaptureFingerPrintAsync()
+    private async Task CaptureFingerPrintAsync(string captureKey)
     {
         FingerprintData = await capturingServices.StartCaptureAsync(10, 60);
-        FingerprintBitMap = "data:image/bmp;base64," + FingerprintData.BitmapData;
-        enroll.FingerPrint = FingerprintData.BitmapData;
+
+        if (enrollRequest is not null)
+        {
+            captureFingerprints[captureKey] = FingerprintData.BitmapData;
+
+            if (captureKey == "capture1")
+            {
+                matchRequest.FingerPrint1 = FingerprintData.BitmapData;
+            }
+            else if (captureKey == "capture2")
+            {
+                matchRequest.FingerPrint2 = FingerprintData.BitmapData;
+            }
+            enrollRequest.FingerPrint = FingerprintData.BitmapData;
+            searchRequest.FingerPrint = FingerprintData.BitmapData;
+        }
     }
 
     private async Task EnrollFingerPrintAsync()
     {
-        await matchingServices.EnrollAsync(enroll);
+        enrollResponse = await matchingServices.EnrollAsync(enrollRequest);
+        if (searchRequest is not null)
+        {
+            searchRequest.Group = enrollRequest.Group;
+        }
+    }
+
+    private async Task SearchFingerPrintAsync()
+    {
+        searchResponse = await matchingServices.SearchAsync(searchRequest);
+    }
+
+    private async Task MatchFingerPrintAsync()
+    {
+        if (enrollRequest?.FingerPrint != null && FingerprintData?.BitmapData != null)
+        {
+            matchResponse = await matchingServices.MatchAsync(matchRequest);
+        }
     }
 }

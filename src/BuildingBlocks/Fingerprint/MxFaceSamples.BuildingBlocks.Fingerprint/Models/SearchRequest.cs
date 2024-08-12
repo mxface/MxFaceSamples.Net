@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace MxFaceSamples.BuildingBlocks.Fingerprint.Models
 {
-    public class Search
+    public class SearchRequest
     {
-        public string? fingerPrint { get; set; }
-        public string? group { get; set; }
+        public string? FingerPrint { get; set; }
+        public string? Group { get; set; }
     }
 }

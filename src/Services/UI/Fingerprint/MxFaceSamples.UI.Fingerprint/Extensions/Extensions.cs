@@ -32,6 +32,5 @@ public static class Extensions
 
         builder.Services.AddHttpClient<FingerprintMatchingService>(o => o.BaseAddress = new(Configuration["MxFace:MxFaceApiEndpointUrl"]))
             .AddSubscriptionKey();
-
     }
 }

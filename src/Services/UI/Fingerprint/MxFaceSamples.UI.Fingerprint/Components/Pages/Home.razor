@@ -123,10 +123,6 @@ else
                     {
                         <div class="row mt-3">
                             <div class="col-md-6">
-                                <div><strong>Message:</strong></div>
-                                <input type="text" value="@searchResponse.Message" class="form-control" disabled />
-                            </div>
-                            <div class="col-md-6">
                                 <div><strong>Matching Score:</strong></div>
                                 <input type="text" value="@searchResponse.MatchResult[0].MatchingScore" class="form-control" disabled />
                             </div>
@@ -192,24 +188,6 @@ else
 
                 @if (matchResponse is not null)
                 {
-                    <div class="row mt-2">
-                        <div class="col-md-3">Code:</div>
-                        <div class="col-md-9">
-                            <input type="text" value="@matchResponse.Code" class="form-control" disabled />
-                        </div>
-                    </div>
-                    <div class="row mt-2">
-                        <div class="col-md-3">Message:</div>
-                        <div class="col-md-9">
-                            <input type="text" value="@matchResponse.Message" class="form-control" disabled />
-                        </div>
-                    </div>
-                    <div class="row mt-2">
-                        <div class="col-md-3">Matching Score:</div>
-                        <div class="col-md-9">
-                            <input type="text" value="@matchResponse.MatchingScore" class="form-control" disabled />
-                        </div>
-                    </div>
                     <div class="row mt-2">
                         <div class="col-md-3">Matched:</div>
                         <div class="col-md-9">

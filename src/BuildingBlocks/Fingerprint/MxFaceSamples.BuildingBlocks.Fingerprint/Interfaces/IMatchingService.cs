@@ -10,5 +10,9 @@ namespace MxFaceSamples.BuildingBlocks.Fingerprint.Interfaces
     public interface IMatchingService
     {
         Task<EnrollmentResponse> EnrollAsync(EnrollmentRequest enroll);
+
+        Task<SearchResponse> SearchAsync(SearchRequest search);
+
+        Task<MatchResponse> MatchAsync(MatchRequest match);
     }
 }

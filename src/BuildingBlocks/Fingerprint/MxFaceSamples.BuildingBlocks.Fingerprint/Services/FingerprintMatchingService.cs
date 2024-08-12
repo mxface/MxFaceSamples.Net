@@ -12,16 +12,47 @@ namespace MxFaceSamples.BuildingBlocks.Fingerprint.Services
 {
     public class FingerprintMatchingService(HttpClient httpClient): IMatchingService
     {
-        private readonly string remoteServiceBaseUrl = "Fingerprint/";
-
+        private readonly string remoteServiceBaseUrl = "api/Fingerprint/";
 
        public async Task<EnrollmentResponse> EnrollAsync(EnrollmentRequest enroll)
         {
-            var response = (await this.PostRequestAsync("EnrollmentRequest", new { fingerPrint = enroll.FingerPrint, externalId = enroll.ExternalId, group = enroll.Group })).FirstOrDefault();
+            var response = (await this.PostRequestAsync("Enroll", new { fingerPrint = enroll.FingerPrint, externalId = enroll.ExternalId, group = enroll.Group })).FirstOrDefault();
 
             if (IsSuccessStatusCode(response.Key))
             {
                 return JsonSerializer.Deserialize<EnrollmentResponse>(response.Value);
+            }
+            else return null;
+        }
+
+        public async Task<SearchResponse> SearchAsync(SearchRequest search)
+        {
+            var response = (await this.PostRequestAsync("Search", new { fingerPrint = search.FingerPrint, group = search.Group })).FirstOrDefault();
+
+            if (IsSuccessStatusCode(response.Key))
+            {
+                var searchResponse = JsonSerializer.Deserialize<SearchResponse>(response.Value);
+                if (searchResponse.MatchResult != null)
+                {
+                    return searchResponse;
+                }
+                else
+                {
+                    searchResponse = new SearchResponse();
+                    searchResponse.MatchResult = JsonSerializer.Deserialize<List<MatchResult>>(response.Value);
+                }
+                return searchResponse;
+            }
+            else return null;
+        }
+
+        public async Task<MatchResponse> MatchAsync(MatchRequest match)
+        {
+            var response = (await this.PostRequestAsync("Verify", new { fingerPrint1 = match.FingerPrint1, fingerPrint2 = match.FingerPrint2 })).FirstOrDefault();
+
+            if (IsSuccessStatusCode(response.Key))
+            {
+                return JsonSerializer.Deserialize<MatchResponse>(response.Value);
             }
             else return null;
         }
@@ -52,7 +83,6 @@ namespace MxFaceSamples.BuildingBlocks.Fingerprint.Services
             }
             else return new Dictionary<int, string> { { 0, string.Empty } };
         }
-
         private bool IsSuccessStatusCode(int statusCode)
         {
             return ((int)statusCode >= 200) && ((int)statusCode <= 299);

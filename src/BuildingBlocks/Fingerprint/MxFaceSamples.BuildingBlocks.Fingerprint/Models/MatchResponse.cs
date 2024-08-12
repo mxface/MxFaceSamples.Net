@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MxFaceSamples.BuildingBlocks.Fingerprint.Models
 {
-    public class EnrollmentResponse
+    public class MatchResponse
     {
         [JsonPropertyName("code")]
         public int? Code { get; set; }
@@ -17,5 +17,11 @@ namespace MxFaceSamples.BuildingBlocks.Fingerprint.Models
 
         [JsonPropertyName("errorMessage")]
         public string? ErrorMessage { get; set; }
+
+        [JsonPropertyName("matchingScore")]
+        public int? MatchingScore { get; set; }
+
+        [JsonPropertyName("matched")]
+        public int? Matched { get; set; }
     }
 }

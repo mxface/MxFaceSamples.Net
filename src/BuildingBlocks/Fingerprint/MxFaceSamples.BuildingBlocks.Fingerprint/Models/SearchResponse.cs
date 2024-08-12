@@ -7,15 +7,27 @@ using System.Threading.Tasks;
 
 namespace MxFaceSamples.BuildingBlocks.Fingerprint.Models
 {
-    public class EnrollmentResponse
+    public class MatchResult
+    {
+        [JsonPropertyName("externalId")]
+        public string? ExternalId { get; set; }
+       
+        [JsonPropertyName("matchingScore")]
+        public int MatchingScore { get; set; }
+    }
+
+    public class SearchResponse
     {
         [JsonPropertyName("code")]
-        public int? Code { get; set; }
+        public int Code { get; set; }
 
         [JsonPropertyName("message")]
         public string? Message { get; set; }
-
+        
         [JsonPropertyName("errorMessage")]
         public string? ErrorMessage { get; set; }
+        
+        [JsonPropertyName("matchResult")]
+        public List<MatchResult>? MatchResult { get; set; }
     }
 }

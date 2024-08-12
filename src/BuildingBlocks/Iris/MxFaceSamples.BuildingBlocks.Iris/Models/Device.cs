@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace MxFaceSamples.BuildingBlocks.Iris.Models
 {
-    public class DeviceInfo1
+    public class DeviceInfo
     {
         public string Certificate { get; set; }
         public int Height { get; set; }
@@ -22,7 +23,8 @@ namespace MxFaceSamples.BuildingBlocks.Iris.Models
 
     public class Device
     {
-        public DeviceInfo1 DeviceInfo1 { get; set; }
+        [JsonPropertyName("DeviceInfo1")]
+        public DeviceInfo DeviceInfo { get; set; }
         public string ErrorCode { get; set; }
         public string ErrorDescription { get; set; }
         public string WSQInfo { get; set; }

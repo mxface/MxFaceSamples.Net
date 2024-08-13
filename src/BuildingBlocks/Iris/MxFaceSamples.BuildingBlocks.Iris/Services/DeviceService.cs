@@ -13,7 +13,7 @@ namespace MxFaceSamples.BuildingBlocks.Iris.Services
 {
     public class DeviceService(HttpClient httpClient, ILogger<DeviceService> logger) : IDeviceService
     {
-        private readonly string remoteServiceBaseUrl = "marvisauth/";
+        private readonly string remoteServiceBaseUrl = "miscan/";
 
 
         public async Task<Device> GetDeviceInfoAsync()

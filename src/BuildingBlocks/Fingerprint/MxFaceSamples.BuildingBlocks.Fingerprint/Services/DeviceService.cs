@@ -11,7 +11,7 @@ namespace MxFaceSamples.BuildingBlocks.Fingerprint.Services;
 
 public class DeviceService(HttpClient httpClient, ILogger<DeviceService> logger) : IDeviceService
 {
-    private readonly string remoteServiceBaseUrl = "morfinauth/";
+    private readonly string remoteServiceBaseUrl = "mfscan/";
 
     public async Task<int> GetConnectedDevices(List<string> devices)
     {

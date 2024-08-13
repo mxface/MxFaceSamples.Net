@@ -30,7 +30,7 @@ else
                 {
                     @if (captureIris.ContainsKey("capture1"))
                     {
-                        <img id="imgIris" alt="Capture 1" class="img-thumbnail" style="max-width: 145px; max-height: 166px;" src="data:image /bmp;base64,@captureIris["capture1"]" />
+                        <img id="imgIris" alt="Capture 1" class="img-thumbnail" style="max-width: 145px; max-height: 166px;" src="@GetImage("capture1")" />
                     }
                     else
                     {
@@ -41,7 +41,7 @@ else
                 {
                     <img id="imgIris" alt="Capture 1" class="img-thumbnail border-primary" style="max-width: 145px; max-height: 166px;" />
                 }
-            </div>
+            </div> 
             <div class="col-md-4">
                 <div class="border p-3 rounded bg-white shadow-sm">
                     <div class="mb-2"><strong>Serial No:</strong> @Device.DeviceInfo.SerialNo</div>
@@ -56,18 +56,30 @@ else
         {
             @if (captureIris.ContainsKey("capture1"))
             {
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label for="txtStatus" class="form-label">Status:</label>
+                <div class="row g-3 mb-3">
+                    <div class="col-md-2 pt-2">
+                        <label for="txtStatus" class="form-label fw-bold text-secondary">Status:</label>
+                    </div>
+                    <div class="col-md-9">
                         <input type="text" value="@IrisData.ErrorDescription" id="txtStatus" class="form-control" disabled />
                     </div>
-                    <div class="col-md-6 mb-3">
-                        <label for="txtImageInfo" class="form-label">Quality:</label>
-                        <input type="text" value="@IrisData.Quality" id="txtImageInfo" class="form-control" disabled />
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-2 pt-2">
+                        <label for="txtQuality" class="form-label fw-bold text-secondary">Quality:</label>
                     </div>
-                    <div class="col-md-12">
-                        <label for="txtIsoTemplate" class="form-label">Image Data:</label>
-                        <textarea id="txtIsoTemplate" class="form-control" rows="3" disabled>@IrisData.BitmapData</textarea>
+                    <div class="col-md-9">
+                        <input type="text" value="@IrisData.Quality" id="txtQuality" class="form-control" disabled />
+                    </div>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-2 pt-4">
+                        <label for="txtImageData" class="form-label fw-bold text-secondary">Image Data:</label>
+                    </div>
+                    <div class="col-md-9">
+                        <textarea id="txtImageData" class="form-control" rows="3" disabled>@IrisData.BitmapData</textarea>
                     </div>
                 </div>
             }
@@ -82,13 +94,13 @@ else
     <div class="panel p-4 mb-4 border rounded shadow-sm bg-light">
 
         <div class="row g-3 align-items-center">
-            <div class="col-md-1 pt-1">
+            <div class="col-md-1 pt-2">
                 <label for="txtGroup" class="form-label fw-bold text-secondary">Group:</label>
             </div>
             <div class="col-md-3">
                 <input type="text" id="txtGroup" @bind="enrollRequest.Group" placeholder="Enter group name" class="form-control" required />
             </div>
-            <div class="col-md-1 pt-1">
+            <div class="col-md-1 pt-2">
                 <label for="enrollRequest.ExternalId" class="form-label fw-bold text-secondary">Code:</label>
             </div>
             <div class="col-md-4">
@@ -139,16 +151,7 @@ else
             @if (searchResponse?.MatchResult?.Count > 0)
             {
                 <div class="row g-3 mb-3">
-                    <div class="col-md-3">
-                        <label for="txtStatus" class="form-label fw-bold text-secondary">Message:</label>
-                    </div>
-                    <div class="col-md-9">
-                        <input type="text" value="@searchResponse.Message" id="txtStatus" class="form-control" disabled />
-                    </div>
-                </div>
-
-                <div class="row g-3 mb-3">
-                    <div class="col-md-3">
+                    <div class="col-md-2 pt-2">
                         <label for="txtImageInfo" class="form-label fw-bold text-secondary">Matching Score:</label>
                     </div>
                     <div class="col-md-9">
@@ -157,7 +160,7 @@ else
                 </div>
 
                 <div class="row g-3 mb-3">
-                    <div class="col-md-3">
+                    <div class="col-md-2 pt-2">
                         <label for="txtIsoTemplate" class="form-label fw-bold text-secondary">Image Data:</label>
                     </div>
                     <div class="col-md-9">
@@ -190,7 +193,7 @@ else
                 {
                     @if (captureIris.ContainsKey("capture1"))
                     {
-                        <img id="imgIris" alt="Capture 1" class="img-thumbnail" style="max-width: 145px; max-height: 166px;" src="data:image /bmp;base64,@captureIris["capture1"]" />
+                        <img id="imgIris" alt="Capture 1" class="img-thumbnail" style="max-width: 145px; max-height: 166px;" src="@GetImage("capture1")" />
                     }
                     else
                     {
@@ -207,7 +210,7 @@ else
                 {
                     @if (captureIris.ContainsKey("capture2"))
                     {
-                        <img id="imgIris" alt="Capture 2" class="img-thumbnail" style="max-width: 145px; max-height: 166px;" src="data:image /bmp;base64,@captureIris["capture2"]" />
+                        <img id="imgIris" alt="Capture 2" class="img-thumbnail" style="max-width: 145px; max-height: 166px;" src="@GetImage("capture2")" />
                     }
                     else
                     {
@@ -225,8 +228,8 @@ else
 
         @if (matchResponse is not null)
         {
-            <div class="row g-3 mb-3">
-                <div class="col-md-3">
+            <div class="row g-3 mb-3 mt-4">
+                <div class="col-md-1 pt-2">
                     <label for="txtStatus" class="form-label fw-bold text-secondary">Match:</label>
                 </div>
                 <div class="col-md-9">
@@ -259,12 +262,7 @@ else
 
     MatchResponse? matchResponse;
 
-    // private int captureCount = 1;
-
     private Dictionary<string, string> captureIris = new Dictionary<string, string>();
-
-    // string IrisBitMap;
-
 
     protected override async Task OnInitializedAsync()
     {
@@ -278,9 +276,15 @@ else
 
     private async Task CaptureIrisAsync(string captureKey)
     {
+
+        if (captureIris.ContainsKey(captureKey))
+        {
+            captureIris[captureKey] = null;
+        }
+
+        StateHasChanged();
+
         IrisData = await capturingServices.StartCaptureAsync(10);
-        // IrisBitMap = "data:image/bmp;base64," + IrisData.BitmapData;
-        // enrollRequest.Iris = IrisData.BitmapData;
 
         if (enrollRequest is not null)
         {
@@ -300,6 +304,17 @@ else
             searchRequest.Iris = IrisData.BitmapData;
         }
 
+        StateHasChanged();
+
+    }
+
+    private string GetImage(string captureKey)
+    {
+        if (captureIris.ContainsKey(captureKey) && !string.IsNullOrEmpty(captureIris[captureKey]))
+        {
+            return $"data:image/bmp;base64,{captureIris[captureKey]}";
+        }
+        return "";
     }
 
     private async Task EnrollIrisAsync()

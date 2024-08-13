@@ -12,7 +12,7 @@ namespace MxFaceSamples.BuildingBlocks.Iris.Services
 {
     public class IrisCapturingService(HttpClient httpClient) : ICaptureService
     {
-        private readonly string remoteServiceBaseUrl = "marvisauth/";
+        private readonly string remoteServiceBaseUrl = "miscan/";
 
         public async Task<CaptureViewModel> StartCaptureAsync(int Timeout = 10)
         {

@@ -8,7 +8,7 @@ namespace MxFaceSamples.UI.Fingerprint.Services;
 
 public class FingerprintCapturingService(HttpClient httpClient) : ICaptureService
 {
-    private readonly string remoteServiceBaseUrl = "morfinauth/";
+    private readonly string remoteServiceBaseUrl = "mfscan/";
 
     public async Task<CaptureViewModel> StartCaptureAsync(int Timeout = 10, int MinimumQuality = 60)
     {

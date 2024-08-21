@@ -5,6 +5,7 @@
 --------------------------------------------------------------------------------
 
 This sample contains example code for Fingerprint and Iris capturing, enrolling and matching.
+Android application for this sample is available at [MxFaceSamples.Android](https://github.com/NischalVarasadaMantratec/MxFaceSamples.Android)
 
 ## Getting Started
 

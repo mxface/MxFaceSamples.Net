@@ -1,5 +1,5 @@
 html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
 }
 
 a, .btn-link {
@@ -13,7 +13,7 @@ a, .btn-link {
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 .content {
@@ -62,46 +62,51 @@ h1:focus {
     padding: 0.25rem 1rem;
     letter-spacing: 0.4px;
 }
-.btn{
-    border:none !important;
-    outline:none !important;
-    box-shadow:none;
-      
+
+.btn {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none;
 }
-.btn_primary {
-    background-color: #5b00fd;
-    color: #fff;
-}
+
+    .btn.btn_primary {
+        background-color: #5b00fd;
+        color: #fff;
+    }
+
 .btn_primary:hover,
 .btn_primary:focus,
-.btn_primary:active:focus{
+.btn_primary:active:focus {
     background-color: #7026fd;
     color: #fff;
-    box-shadow:none;
+    box-shadow: none;
 }
+
 .custom_card {
     background-color: #fff;
     box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
     border: 1px solid #dee2e6;
-    margin-bottom:2rem;
-    border-radius:0.25rem;
-    padding:1rem;
+    margin-bottom: 2rem;
+    border-radius: 0.25rem;
+    padding: 1rem;
 }
+
 .detail_item_box {
     border: 1px solid rgb(91 0 253 / 10%);
     padding: 0.25rem 0.5rem;
     border-radius: 4px;
-    margin-bottom:1rem;
-    font-size:14px;
+    margin-bottom: 1rem;
+    font-size: 14px;
 }
-.m-h-220px{
-    min-height:220px;
+
+.m-h-220px {
+    min-height: 220px;
 }
+
 .text_primary {
     font-size: 18px;
     font-weight: 600;
     letter-spacing: 0.4px;
     color: #5b00fd;
-    
 }
 /*New UI Style End*/

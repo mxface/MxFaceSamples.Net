@@ -9,12 +9,12 @@
 
 <PageTitle>MxFace Fingerprint Sample</PageTitle>
 
-@* @if (Device is null)
+@if (Device is null)
 {
     <p>No Device Found!</p>
 }
 else
-{ *@
+{
 
     <!-- Capture Section Start-->
 
@@ -24,16 +24,16 @@ else
             <div class="col-md-6">
                 <div class="d-flex justify-content-between">
                     <div class="custom_card details_box w-100 mb-0">
-                        <div class="detail_item_box"><strong>Serial No:</strong>@*  @Device.DeviceInfo.SerialNo *@</div>
-                        <div class="detail_item_box"><strong>Model:</strong>@*  @Device.DeviceInfo.Model *@</div>
-                        <div class="detail_item_box"><strong>Make:</strong> @* @Device.DeviceInfo.Make *@</div>
-                        <div class="detail_item_box"><strong>Status:</strong> <span class="text-warning">@* @Device.ErrorDescription *@</span></div>
+                        <div class="detail_item_box"><strong>Serial No:</strong> @Device.DeviceInfo.SerialNo</div>
+                        <div class="detail_item_box"><strong>Model:</strong> @Device.DeviceInfo.Model</div>
+                        <div class="detail_item_box"><strong>Make:</strong> @Device.DeviceInfo.Make</div>
+                        <div class="detail_item_box"><strong>Status:</strong> <span class="text-warning">@Device.ErrorDescription</span></div>
                     </div>
                     <div class="custom_card details_box w-100 ms-3 mb-0 text-center">
 
 
 
-                        @* @if (FingerprintData is not null)
+                        @if (FingerprintData is not null)
                         {
                             @if (captureFingerprints.ContainsKey("capture1"))
                             {
@@ -49,11 +49,11 @@ else
                             }
                         }
                         else
-                        { *@
+                        {
                             <div class="captured_img">
-                                 <img id="imgFingerprints" class="img-thumbnail" src="../FingerDemo.svg" width="220" height="220" alt="Capture 1" />
+                                <img id="imgFingerprints" class="img-thumbnail" src="../FingerDemo.svg" width="220" height="220" alt="Capture 1" />
                             </div>
-                        @* } *@
+                        }
 
                         <button id="btnCapture1" class="btn btn_primary mt-3 w-100" @onclick="@(() => CaptureFingerPrintAsync("capture1"))">
                             <i class="fas fa-camera"></i> Capture 1
@@ -63,32 +63,32 @@ else
             </div>
             <div class="col-6">
                 <div class="custom_card mb-0 h-100">
-                    @* @if (FingerprintData is not null)
+                    @if (FingerprintData is not null)
                     {
                         @if (captureFingerprints.ContainsKey("capture1"))
-                        { *@
+                        {
                             <div class="row">
                                 <div class="col-6 ">
                                     <div class="">
                                         <label for="txtStatus" class="form-label fw-bold text-secondary">Status:</label>
-                                        <input type="text" value="@* @FingerprintData.ErrorDescription *@" id="txtStatus" class="form-control" disabled />
+                                        <input type="text" value="@FingerprintData.ErrorDescription" id="txtStatus" class="form-control" disabled />
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="">
                                         <label for="txtQuality" class="form-label fw-bold text-secondary">Quality:</label>
-                                        <input type="text" value="@* @FingerprintData.Quality *@" id="txtQuality" class="form-control" disabled />
+                                        <input type="text" value="@FingerprintData.Quality" id="txtQuality" class="form-control" disabled />
                                     </div>
                                 </div>
                                 <div class="col-12 mt-3">
                                     <div class="">
                                         <label for="txtImageData" class="form-label fw-bold text-secondary">Image Data:</label>
-                                        <textarea id="txtImageData" class="form-control" rows="3" disabled>@* @FingerprintData.BitmapData *@</textarea>
+                                        <textarea id="txtImageData" class="form-control" rows="3" disabled>@FingerprintData.BitmapData</textarea>
                                     </div>
                                 </div>
                             </div>
-                       @*  }
-                    } *@
+                        }
+                    }
                 </div>
             </div>
         </div>
@@ -106,32 +106,32 @@ else
                     <div class="row g-3 align-items-end">
                         <div class="col-6">
                             <label for="txtGroup" class="form-label fw-bold text-secondary">Group:</label>
-                            <input type="text" id="txtGroup" @* @bind="enrollRequest.Group" *@ placeholder="Enter group name" class="form-control" required />
+                            <input type="text" id="txtGroup" @bind="enrollRequest.Group" placeholder="Enter group name" class="form-control" required />
                         </div>
 
                         <div class="col-6">
                             <label for="enrollRequest.ExternalId" class="form-label fw-bold text-secondary">Code:</label>
-                            <input type="text" @* @bind="enrollRequest.ExternalId" *@ id="enrollRequest.ExternalId" class="form-control" />
+                            <input type="text" @bind="enrollRequest.ExternalId" id="enrollRequest.ExternalId" class="form-control" />
                         </div>
                     </div>
 
                     <div class="row g-3 align-items-center mt-3">
 
 
-                        @* @if (enrollResponse is not null)
-                        { *@
+                        @if (enrollResponse is not null)
+                        {
                             <div class="d-flex align-items-center mt-3">
                                 <div class="w-50">
                                     <label for="enrollResponse.Code" class="form-label fw-bold text-secondary">Response Code:</label>
-                                    <p id="enrollResponse.Code" class="detail_item_box p-3 text-success">@* @enrollResponse.Code *@</p>
+                                    <p id="enrollResponse.Code" class="detail_item_box p-3 text-success">@enrollResponse.Code</p>
 
                                 </div>
                                 <div class="w-50 ms-3">
                                     <label for="enrollResponse.Message" class="form-label fw-bold text-secondary">Message:</label>
-                                    <p id="enrollResponse.Message" class="detail_item_box p-3 text-success">@* @enrollResponse.Message *@</p>
+                                    <p id="enrollResponse.Message" class="detail_item_box p-3 text-success">@enrollResponse.Message</p>
                                 </div>
                             </div>
-                        @* } *@
+                        }
                     </div>
                     <div class="mt-3 w-100">
                         <button id="btnEnroll" class="btn btn_primary w-100" @onclick="EnrollFingerPrintAsync">Enroll</button>
@@ -143,31 +143,32 @@ else
             <div class="col-md-6 col-12">
                 <p class="heading_title">Search</p>
                 <div class="custom_card m-h-220px mb-0">
-                    @* @if (searchResponse is not null)
+                    <div class="col-md-12 mt-2">
+                        <button id="btnMatch" class="btn btn_primary w-100" @onclick="SearchFingerPrintAsync">Search</button>
+                    </div>
+                    @if (searchResponse is not null)
                     {
                         @if (searchResponse?.MatchResult?.Count > 0)
-                        { *@
-                            <div class="row g-3 align-items-center">
+                        {
+                            <div class="row g-3 align-items-center mt-4">
                                 <div class="col-md-6">
                                     <label for="txtImageInfo" class="form-label fw-bold text-secondary">Matching Score:</label>
-                                    <input type="text" value="@* @searchResponse.MatchResult[0].MatchingScore *@" id="txtImageInfo" class="form-control" disabled />
+                                    <input type="text" value="@searchResponse.MatchResult[0].MatchingScore" id="txtImageInfo" class="form-control" disabled />
                                 </div>
 
                                 <div class="col-md-6">
                                     <label for="txtIsoTemplate" class="form-label fw-bold text-secondary">Image Data:</label>
-                                    <textarea id="txtIsoTemplate" class="form-control" rows="2" disabled>@* @FingerprintData?.BitmapData *@</textarea>
+                                    <textarea id="txtIsoTemplate" class="form-control" rows="2" disabled>@FingerprintData?.BitmapData</textarea>
                                 </div>
 
-                                <div class="col-md-12 mt-5">
-                                    <button id="btnMatch" class="btn btn_primary w-100" @onclick="SearchFingerPrintAsync">Search</button>
-                                </div>
+
                             </div>
-                        @* } *@
-                        @* else
+                        }
+                        else
                         {
                             <p>No match results found!</p>
                         }
-                    } *@
+                    }
                 </div>
             </div>
             <!-- Search Section End -->
@@ -186,7 +187,7 @@ else
                 <div class="d-flex justify-content-between">
                     <div class="custom_card w-100 mb-0 text-center">
                         <p class="text_primary">Capture 1</p>
-                       @*  @if (FingerprintData is not null)
+                        @if (FingerprintData is not null)
                         {
                             @if (captureFingerprints.ContainsKey("capture1"))
                             {
@@ -195,22 +196,22 @@ else
                                 </div>
                             }
                             else
-                            { *@
+                            {
                                 <div class="captured_img">
                                     <img id="imgFingerprints" alt="Capture 1" class="img-thumbnail" src="../FingerDemo.svg" height="220" width="220" />
                                 </div>
-                           @*  }
+                            }
                         }
                         else
                         {
                             <div class="captured_img">
                                 <img id="imgFingerprints" alt="Capture 1" class="img-thumbnail" src="../FingerDemo.svg" height="220" width="220" />
                             </div>
-                        } *@
+                        }
                     </div>
                     <div class="custom_card w-100 mb-0 text-center ms-3">
 
-                        @* @if (FingerprintData is not null)
+                        @if (FingerprintData is not null)
                         {
                             @if (captureFingerprints.ContainsKey("capture2"))
                             {
@@ -219,18 +220,18 @@ else
                                 </div>
                             }
                             else
-                            { *@
+                            {
                                 <div class="captured_img">
                                     <img id="imgFingerprints" alt="Capture 2" class="img-thumbnail" src="../FingerDemo.svg" height="220" width="220" />
                                 </div>
-                           @*  }
+                            }
                         }
                         else
                         {
                             <div class="captured_img">
                                 <img id="imgFingerPrints" alt="Capture 2" class="img-thumbnail" src="../FingerDemo.svg" height="220" width="220" />
                             </div>
-                        } *@
+                        }
                         <div class="mt-3">
                             <button id="btnEnroll" class="btn btn_primary w-100" @onclick="@(() => CaptureFingerPrintAsync("capture2"))">Capture 2</button>
                         </div>
@@ -242,18 +243,18 @@ else
             </div>
             <div class="col-md-4">
                 <div class="custom_card mb-0">
-                    @* @if (matchResponse is not null)
-                    { *@
+                    @if (matchResponse is not null)
+                    {
                         <label for="txtStatus" class="form-label fw-bold text-secondary">Match:</label>
-                        <input type="text" value="@* @matchResponse.Matched *@" id="txtStatus" class="form-control" disabled />
-                    @* } *@
+                        <input type="text" value="@matchResponse.Matched" id="txtStatus" class="form-control" disabled />
+                    }
                 </div>
             </div>
         </div>
     </div>
 
     <!--Match Section End -->
-@* } *@
+}
 
 @code {
     // Existing code remains unchanged
@@ -272,9 +273,9 @@ else
     protected override async Task OnInitializedAsync()
     {
         var DeviceNames = new List<string>();
-        // await deviceService.GetConnectedDevices(DeviceNames);
+        await deviceService.GetConnectedDevices(DeviceNames);
 
-        // Device = await deviceService.GetDeviceInfoAsync(DeviceNames[0]);
+        Device = await deviceService.GetDeviceInfoAsync(DeviceNames[0]);
 
         enrollRequest ??= new EnrollmentRequest();
         searchRequest ??= new SearchRequest();

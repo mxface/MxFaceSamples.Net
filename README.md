@@ -25,4 +25,4 @@ Android application for this sample is available at [MxFaceSamples.Android](http
 - Run the Iris or Fingerprint sample
 
 ### Disclaimer
-You will need active MxFace AI subscription for Enrolling and Matching.
+You will need active MxFace AI subscription for Enrolling and 1:N Search.
